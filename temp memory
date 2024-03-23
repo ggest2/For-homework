@@ -1,0 +1,10 @@
+#include <iostream>
+using namespace std;
+class /*클래스 명*/(
+
+
+)
+int main(){
+  /*변수명 작성*/
+}
+/*외부 클래스 참조에 대해서 연습할 필요가 있음*/
