@@ -1,0 +1,9 @@
+#include <iostream>
+using namespace std;
+class /*클래스 명*/(
+
+
+)
+int main(){
+  /*변수명 작성*/
+}
