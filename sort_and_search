@@ -1,0 +1,40 @@
+import sqlite3
+
+def search_restaurants(tag=None):
+    conn = sqlite3.connect('restaurants.db')
+    cursor = conn.cursor()
+
+    if tag:
+        cursor.execute("SELECT * FROM restaurants WHERE tags LIKE ?", ('%{}%'.format(tag),))
+        restaurants = cursor.fetchall()
+        if not restaurants:
+            print("입력한 태그를 포함하는 음식점이 없습니다.(No restaurant contains the entered tag.)")
+    else:
+        cursor.execute("SELECT * FROM restaurants")
+        restaurants = cursor.fetchall()
+
+    conn.close()
+    return restaurants
+
+def sort_restaurants_by_rating(restaurants):
+    restaurants.sort(key=lambda x: get_average_rating(x[0]), reverse=True)
+    return restaurants
+
+def get_average_rating(restaurant_id):
+    conn = sqlite3.connect('restaurants.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT AVG(score) FROM ratings WHERE restaurant_id=?", (restaurant_id,))
+    average_rating = cursor.fetchone()[0]
+
+    conn.close()
+    return average_rating
+
+if __name__ == "__main__":
+    tag = input()
+    filtered_restaurants = search_restaurants(tag)
+    sorted_restaurants = sort_restaurants_by_rating(filtered_restaurants)
+
+    print("Filtered and sorted restaurants based on tag '{}' and average rating:".format(tag))
+    for restaurant in sorted_restaurants:
+        print("Name: {}, Address: {}, Tags: {}, Average Rating: {}".format(restaurant[1], restaurant[2], restaurant[3], get_average_rating(restaurant[0])))
