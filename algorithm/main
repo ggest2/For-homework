@@ -3,7 +3,7 @@ region_name = input()
 page_num = input()
 url = 'https://dapi.kakao.com/v2/local/search/keyword.json' 
 params = {'query': region_name,'page': page_num} 
-headers = {"Authorization": "KakaoAK f64acb1ae8c664570e4f52f73776065744"}
+headers = {"Authorization": "KakaoAK 63a142aa5759e27bd31a9d230c675ddb"}
 places = requests.get(url, params=params, headers=headers).json()['documents']
 total = requests.get(url, params=params, headers=headers).json()['meta']['total_count'] 
 if total > 45: 
