@@ -7,7 +7,7 @@ from folium.plugins import MiniMap
 def elec_location(region,page_num):
     url = 'https://dapi.kakao.com/v2/local/search/keyword.json'
     params = {'query': region,'page': page_num}
-    headers = {"Authorization": "KakaoAK63a142aa5759e27bd31a9d230c675ddb"}
+    headers = {"Authorization": "KakaoAK 63a142aa5759e27bd31a9d230c675ddb"}
 
     places = requests.get(url, params=params, headers=headers).json()['documents']
     total = requests.get(url, params=params, headers=headers).json()['meta']['total_count']
