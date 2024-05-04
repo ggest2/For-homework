@@ -1,14 +1,45 @@
-restaurants = [
-    {
-        "name": "레스토랑1",
-        "address": "서울특별시 강남구 역삼동 123-45",
-        "rating": 4.5,
-        "tags": ["한식", "고급", "가족식사"]
-    },
-    {
-        "name": "카페2",
-        "address": "서울특별시 강남구 신사동 543-21",
-        "rating": 3.8,
-        "tags": ["카페", "분위기 좋은", "디저트"]
-    },
+import sqlite3
+
+# SQLite 데이터베이스 연결
+conn = sqlite3.connect('restaurants.db')
+cursor = conn.cursor()
+
+# 음식점 정보 테이블 생성
+cursor.execute('''CREATE TABLE IF NOT EXISTS restaurants (
+                    id INTEGER PRIMARY KEY,
+                    name TEXT,
+                    address TEXT,
+                    tags TEXT
+                )''')
+
+# 평가 정보 테이블 생성
+cursor.execute('''CREATE TABLE IF NOT EXISTS ratings (
+                    id INTEGER PRIMARY KEY,
+                    restaurant_id INTEGER,
+                    score REAL,
+                    FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)
+                )''')
+
+# 음식점 정보 삽입 예시
+restaurant_data = [
+    ("레스토랑1", "서울특별시 강남구 역삼동 123-45", "한식, 고급, 가족식사"),
+    ("카페2", "서울특별시 강남구 신사동 543-21", "카페, 분위기 좋은, 디저트")
 ]
+
+cursor.executemany("INSERT INTO restaurants (name, address, tags) VALUES (?, ?, ?)", restaurant_data)
+
+# 음식점 평가 정보 삽입 예시
+rating_data = [
+    (1, 4.5),
+    (1, 4.8),
+    (2, 3.8),
+    (2, 4.0)
+]
+
+cursor.executemany("INSERT INTO ratings (restaurant_id, score) VALUES (?, ?)", rating_data)
+
+# 변경사항 저장
+conn.commit()
+
+# 연결 종료
+conn.close()
