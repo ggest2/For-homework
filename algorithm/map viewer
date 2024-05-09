@@ -1,1 +1,4 @@
-<div id="map" style="width:500px;height:400px;"></div>
+<div id="map" style="width:500px;height:400px;"></div>/*맵 띄어주는 공간*/
+
+
+
