@@ -1,0 +1,66 @@
+import requests
+import pandas as pd
+import numpy as np
+import folium
+from folium.plugins import MiniMap
+
+keyword = input()
+page_num = 3
+
+def elec_location(region,page_num):
+    url = 'https://dapi.kakao.com/v2/local/search/keyword.json'
+    params = {'query': keyword,'page': page_num}
+    headers = {"Authorization": "KakaoAK 63a142aa5759e27bd31a9d230c675ddb"}
+
+    response = requests.get(url, params=params, headers=headers).json()
+    places = response['documents']
+    total = response['meta']['total_count']
+
+    if total > 45:
+        print(total,'개 중 45개 데이터밖에 가져오지 못했습니다!')
+    else :
+        print('모든 데이터를 가져왔습니다!')
+
+    return places
+
+def elec_info(places):
+data = {
+        'ID': [],
+        'stores': [],
+        'X': [],
+        'Y': [],
+        'road_address': [],
+        'place_url': []
+    }
+
+    for place in places:
+        data['ID'].append(place['id'])
+        data['stores'].append(place['place_name'])
+        data['X'].append(float(place['x']))
+        data['Y'].append(float(place['y']))
+        data['road_address'].append(place['road_address_name'])
+        data['place_url'].append(place['place_url'])
+
+    return pd.DataFrame(data)
+
+def keywords(location_name):
+ df_list = []
+
+    for loca in location:
+        local_df = pd.concat([elec_info(elec_location(loca, page)) for page in range(1, 4)], ignore_index=True)
+        df_list.append(local_df)
+
+    return pd.concat(df_list, ignore_index=True)
+
+def make_map(df):
+    m = folium.Map(location=[33.4935, 126.6266], zoom_start=12)
+    minimap = MiniMap() 
+    m.add_child(minimap)
+
+    for i in range(len(df)):
+        folium.Marker([df['Y'][i], df['X'][i]],
+                      tooltip=df['stores'][i],
+                      popup=df['place_url'][i]
+        ).add_to(m)
+
+    return m
