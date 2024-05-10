@@ -116,3 +116,4 @@ print('total_reuslt_number = ',len(df))
 display(df.head())
  
 make_map(df)
+#테스트 미실시 좌표는 설정해뒀음
