@@ -19,9 +19,3 @@ driver.find_element(By.XPATH, r'//*[@id="search.keyword.submit"]').send_keys(Key
 
 # 일정 시간 대기 (지도가 로드되기를 기다리기 위해)
 time.sleep(10)
-
-# 검색된 장소 마커 표시
-places = driver.find_elements_by_css_selector(".PlacelistItem")
-for place in places:
-    place.click()
-    time.sleep(1)
