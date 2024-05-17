@@ -34,5 +34,6 @@ checkInput = input("경로 찾기는 G키를 누르세요. 종료를 원하신�
 
 if checkInput == '\n':
     driver.quit()
-else if checkInput == 'g':
+if checkInput == 'g':
+    
     
