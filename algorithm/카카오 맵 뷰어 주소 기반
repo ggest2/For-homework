@@ -30,7 +30,9 @@ driver.find_element(By.XPATH, r'//*[@id="search.keyword.submit"]').send_keys(Key
 # 일정 시간 대기 (지도가 로드되기를 기다리기 위해)
 wait_for_results(driver)
 
-checkEnter = input("검색 결과 확인 후에 Enter 키를 누르세요...")
+checkInput = input("경로 찾기는 G키를 누르세요. 종료를 원하신다면 Enter를 누르세요.")
 
-if checkEnter == "\n":
+if checkInput == '\n':
     driver.quit()
+else if checkInput == 'g':
+    
