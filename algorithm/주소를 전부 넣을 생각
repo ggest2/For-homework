@@ -7,43 +7,58 @@ import time
 
 def wait_for_results(driver):
     try:
-        # 검색 결과가 나타날 때까지 기다림 
+        # 검색 결과가 나타날 때까지 기다림
         WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'PlaceItem'))
         )
-    except:
-        print("Timeout: 검색 결과가 나타나지 않았습니다.")
+    except Exception as e:
+        print("Timeout: 검색 결과가 나타나지 않았습니다.", e)
 
+# 예시 데이터베이스 (리스트로 구현)
 database = [
-    {"id": 1, "address": "서울특별시 강남구 테헤란로 152",},
-    {"id": 2, "address": "부산광역시 해운대구 센텀남대로 350",},
-    {"id": 3, "address": "대구광역시 동구 동대구로 550",}
+    {"id": 1, "address": "서울특별시 강남구 테헤란로 152", "tags": ["음식점"]},
+    {"id": 2, "address": "부산광역시 해운대구 센텀남대로 350", "tags": ["쇼핑몰"]},
+    {"id": 3, "address": "대구광역시 동구 동대구로 550", "tags": ["음식점", "카페"]}
 ]
 
-def get_address_from_db(id):
-    for entry in database:
-        if entry["id"] == id:
-            return entry["address"]
-    return None
+# 특정 태그가 포함된 항목을 필터링
+def filter_by_tag(tag):
+    return [entry for entry in database if tag in entry["tags"]]
 
-search_id = int(input("검색할 주소의 ID를 입력하세요: "))
-search_address = get_address_from_db(search_id)
+# 태그를 기준으로 검색할 주소 목록을 필터링
+search_tag = input("검색할 태그를 입력하세요: ")
+filtered_addresses = filter_by_tag(search_tag)
 
-driver = webdriver.Chrome()
+if not filtered_addresses:
+    print(f"'{search_tag}' 태그를 가진 항목이 없습니다.")
+else:
+    # 필터링된 결과 출력
+    print(f"'{search_tag}' 태그를 가진 주소 목록:")
+    for entry in filtered_addresses:
+        print(f"ID: {entry['id']}, Address: {entry['address']}, Tags: {', '.join(entry['tags'])}")
 
-# 지도 페이지 열기
-driver.get('https://map.kakao.com/')
-time.sleep(3)
+    # 검색할 주소의 ID를 입력받음
+    search_id = int(input("검색할 주소의 ID를 입력하세요: "))
+    search_address = next((entry["address"] for entry in filtered_addresses if entry["id"] == search_id), None)
 
-# 검색창에 검색어 입력
-search_box = driver.find_element(By.XPATH,r'//*[@id="search.keyword.query"]')
-search_box.send_keys(search_address)
-driver.find_element(By.XPATH, r'//*[@id="search.keyword.submit"]').send_keys(Keys.ENTER)
+    if search_address is None:
+        print("해당 ID에 대한 주소를 찾을 수 없습니다.")
+    else:
+        driver = webdriver.Chrome()
 
-# 일정 시간 대기 (지도가 로드되기를 기다리기 위해)
-wait_for_results(driver)
+        # 지도 페이지 열기
+        driver.get('https://map.kakao.com/')
+        time.sleep(3)
 
-checkInput = input("종료를 원하신다면 Enter를 누르세요.")
+        # 검색창에 검색어 입력
+        search_box = driver.find_element(By.XPATH, r'//*[@id="search.keyword.query"]')
+        search_box.send_keys(search_address)
+        driver.find_element(By.XPATH, r'//*[@id="search.keyword.submit"]').send_keys(Keys.ENTER)
 
-if checkInput == '\n':
-    driver.quit()
+        # 일정 시간 대기 (지도가 로드되기를 기다리기 위해)
+        wait_for_results(driver)
+
+        checkInput = input("종료를 원하신다면 Enter를 누르세요.")
+        if checkInput == '':
+            driver.quit()
+
