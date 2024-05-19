@@ -16,16 +16,16 @@ def wait_for_results(driver):
 
 # 예시 데이터베이스 (리스트로 구현)
 database = [
-    {"id": 1, "address": "", "tags": [""], "rating": 0.0},
-    {"id": 2, "address": "", "tags": [""], "rating": 0.0},
-    {"id": 3, "address": "", "tags": [""], "rating": 0.0},
-    {"id": 4, "address": "", "tags": [""], "rating": 0.0},
-    {"id": 5, "address": "", "tags": [""], "rating": 0.0},
-    {"id": 6, "address": "", "tags": [""], "rating": 0.0},
-    {"id": 7, "address": "", "tags": [""], "rating": 0.0},
-    {"id": 8, "address": "", "tags": [""], "rating": 0.0},
-    {"id": 9, "address": "", "tags": [""], "rating": 0.0},
-    {"id": 10, "address": "", "tags": [""], "rating": 0.0},
+    {"id": 1, "name": "그라찌에", "address": "경기 용인시 처인구 모현읍 외대로 81 후생관 3층", "tags": ["카페, 음료"], "rating": 4.3},
+    {"id": 2, "name": "한국외국어대학 글로벌캠퍼스 후생관 학생식당", "address": "경기 용인시 처인구 모현읍 외대로 81", "tags": ["구내식당"], "rating": 5.0},
+    {"id": 3, "name": "토스트럭", "address": "경기 용인시 처인구 모현읍 외대로 81", "tags": ["토스트, 분식"], "rating": 0.0},
+    {"id": 4, "name": "비틀주스", "address": "경기 용인시 처인구 모현읍 외대로 81 후생관 2층", "tags": ["생과일 전문점, 음료"], "rating": 3.7},
+    {"id": 5, "name": "맘스터치 한국외대글로벌점"  , "address": "경기 용인시 처인구 모현읍 외대로 81 3층", "tags": ["패스트푸드"], "rating": 4.0},
+    {"id": 6, "name": "까르보네 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 81 어문학관동 1층", "tags": ["양식"], "rating": 0.0},
+    {"id": 7, "name": "애플빈", "address": "경기 용인시 처인구 모현읍 외대로 81 한국외국어대학교 어문관식당내 1층", "tags": ["카페"], "rating": 0.0},
+    {"id": 8, "name": "던킨 한국외대글로벌캠퍼스점", "address": "경기 용인시 처인구 모현읍 외대로 81 다목적관백년관 1층 107호", "tags": ["카페, 도넛"], "rating": 0.0},
+    {"id": 9, "name": "동산함바식당", "address": "경기 용인시 처인구 모현읍 외대로 81", "tags": ["한식"], "rating": 0.0},
+    {"id": 10, "name": "한국외국어대학교 제2기숙사식당", "address": "경기 용인시 처인구 모현읍 외대로 81", "tags": ["구내식당"], "rating": 0.0},
     {"id": 11, "address": "", "tags": [""], "rating": 0.0},
     {"id": 12, "address": "", "tags": [""], "rating": 0.0},
     {"id": 13, "address": "", "tags": [""], "rating": 0.0},
@@ -163,4 +163,3 @@ else:
         checkInput = input("종료를 원하신다면 Enter를 누르세요.")
         if checkInput == '':
             driver.quit()
-
