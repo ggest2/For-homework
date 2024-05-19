@@ -1,3 +1,10 @@
 from django.db import models
 
-# Create your models here.
+class restaurant(models.Model):
+    name = models.TextField()
+    tags = models.TextField()
+    rating = models.IntegerField()
+    adress = models.TimeField()
+    callNumber = models.TextField()
+    def __str__(self):
+        return self.subject

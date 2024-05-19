@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MhmzfinderConfig(AppConfig):
+class MzfinderConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mhmzfinder'
+    name = 'mzfinder'
