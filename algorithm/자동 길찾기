@@ -1,0 +1,271 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+departure = "경기 용인시 처인구 모현읍 외대로 81"
+
+def wait_for_results(driver):
+    try:
+        # 검색 결과가 나타날 때까지 기다림
+        WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'PlaceItem'))
+        )
+    except Exception as e:
+        print("Timeout: 검색 결과가 나타나지 않았습니다.", e)
+
+# 예시 데이터베이스 (리스트로 구현)
+database = [
+    {"id": 1, "name": "그라찌에", "address": "경기 용인시 처인구 모현읍 외대로 81 후생관 3층", "tags": ["카페", "음료"], "rating": 4.3},
+    {"id": 2, "name": "한국외국어대학 글로벌캠퍼스 후생관 학생식당", "address": "경기 용인시 처인구 모현읍 외대로 81", "tags": ["구내식당"], "rating": 5.0},
+    {"id": 3, "name": "토스트럭", "address": "경기 용인시 처인구 모현읍 외대로 81", "tags": ["토스트", "분식", "패스트푸드"], "rating": 0.0},
+    {"id": 4, "name": "비틀주스", "address": "경기 용인시 처인구 모현읍 외대로 81 후생관 2층", "tags": ["생과일 전문점", "음료"], "rating": 3.7},
+    {"id": 5, "name": "맘스터치 한국외대글로벌점"  , "address": "경기 용인시 처인구 모현읍 외대로 81 3층", "tags": ["햄버거", "패스트푸드"], "rating": 4.0},
+    {"id": 6, "name": "까르보네 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 81 어문학관동 1층", "tags": ["양식"], "rating": 0.0},
+    {"id": 7, "name": "애플빈", "address": "경기 용인시 처인구 모현읍 외대로 81 한국외국어대학교 어문관식당내 1층", "tags": ["카페"], "rating": 0.0},
+    {"id": 8, "name": "던킨 한국외대글로벌캠퍼스점", "address": "경기 용인시 처인구 모현읍 외대로 81 다목적관백년관 1층 107호", "tags": ["카페", "도넛"], "rating": 0.0},
+    {"id": 9, "name": "동산함바식당", "address": "경기 용인시 처인구 모현읍 외대로 81", "tags": ["한식"], "rating": 0.0},
+    {"id": 10, "name": "한국외국어대학교 제2기숙사식당", "address": "경기 용인시 처인구 모현읍 외대로 81", "tags": ["구내식당"], "rating": 0.0},
+    {"id": 11, "name": "로텐토르테", "address": "경기 용인시 처인구 모현읍 외대로 56", "tags": ["베이커리"], "rating": 5.0},
+    {"id": 12, "name": "카페도리", "address": "경기 용인시 처인구 모현읍 외대로54번길 7", "tags": ["카페"], "rating": 3.2},
+    {"id": 13, "name": "낙지도가", "address": "경기 용인시 처인구 모현읍 외대로54번길 9 1층", "tags": ["해물", "생선"], "rating": 3.0},
+    {"id": 14, "name": "성수식당", "address": "경기 용인시 처인구 모현읍 외대로54번길 11 1층 101호", "tags": ["한식"], "rating": 4.3},
+    {"id": 15, "name": "유지니의작은정원", "address": "경기 용인시 처인구 모현읍 외대로54번길 15 지1층", "tags": ["카페"], "rating": 5.0},
+    {"id": 16, "name": "더큐브랩", "address": "경기 용인시 처인구 모현읍 외대로54번길 24 A동", "tags": ["디저트", "카페"], "rating": 0.0},
+    {"id": 17, "name": "솔라카페", "address": "경기 용인시 처인구 모현읍 외대로54번길 28", "tags": ["카페"], "rating": 0.0},
+    {"id": 18, "name": "미니미제과 ", "address": "경기 용인시 처인구 모현읍 외대로54번길 28-2", "tags": ["카페"], "rating": 0.0},
+    {"id": 19, "name": "파니스안젤리쿠스", "address": "경기 용인시 처인구 모현읍 외대로54번길 30-10 1층", "tags": ["디저트", "카페"], "rating": 5.0},
+    {"id": 20, "name": "음미커피", "address": "경기 용인시 처인구 모현읍 외대로54번길 6 삼호아트빌 101호", "tags": ["카페"], "rating": 5.0},
+    {"id": 21, "name": "큰맘할매순대국 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 50", "tags": ["국밥", "한식"], "rating": 3.8},
+    {"id": 22, "name": "49포차", "address": "경기 용인시 처인구 모현읍 외대로 50", "tags": ["호프", "요리주점", "주점"], "rating": 1.0},
+    {"id": 23, "name": "닭뜰애닭갈비 외대점", "address": "경기 용인시 처인구 모현읍 외대로 46 1층", "tags": ["닭갈비", "한식"], "rating": 3.6},
+    {"id": 24, "name": "보쌈주는족발집 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 42-1 1층", "tags": ["족발", "보쌈", "한식"], "rating": 0.0},
+    {"id": 25, "name": "썸", "address": "경기 용인시 처인구 모현읍 외대로 42-1 3층", "tags": ["카페"], "rating": 4.0},  
+    {"id": 26, "name": "이백장돈가스 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 42-1 1층", "tags": ["양식"], "rating": 5.0},
+    {"id": 27, "name": "냉불",  "address": "경기 용인시 처인구 모현읍 외대로 42-1 1층", "tags": ["고기"], "rating": 5.0},
+    {"id": 28, "name": "디저트39 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 42 1층", "tags": ["디저트", "카페"], "rating": 3.6},
+    {"id": 29, "name": "감성커피 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로40번길 1 1층", "tags": ["카페"], "rating": 5.0},
+    {"id": 30, "name": "외대갈매기 용인모현본점", "address": "경기 용인시 처인구 모현읍 외대로40번길 4 2층", "tags": ["고기"], "rating": 5.0},
+    {"id": 31, "name": "치킨마루",  "address": "경기 용인시 처인구 모현읍 외대로40번길 4 1층 101,102호", "tags": ["치킨", "패스트푸드"], "rating": 2.7},
+    {"id": 32, "name": "주류창고", "address": "경기 용인시 처인구 모현읍 외대로40번길 4 2층", "tags": ["주점"], "rating":4.5},
+    {"id": 33, "name": "올데이스위트", "address": "경기 용인시 처인구 모현읍 외대로40번길 4 1층", "tags": ["베이커리"], "rating": 5.0},
+    {"id": 34, "name": "냉동창고 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로40번길 6-4 105호", "tags": ["밀키트"], "rating": 0.0},
+    {"id": 35, "name": "큐브떡볶이", "address": "경기 용인시 처인구 모현읍 외대로40번길 6-4 103호", "tags": ["떡볶이", "분식", "패스트푸드"], "rating": 0.0},
+    {"id": 36, "name": "이디야커피 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 36 C동 1,2층", "tags": ["카페"], "rating": 5.0},
+    {"id": 37, "name": "누들리즘 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로40번길 6-4 102호", "tags": ["분식", "패스트푸트"], "rating": 0.0},
+    {"id": 38, "name": "쏘자토스트", "address": "경기 용인시 처인구 모현읍 외대로40번길 2 1층", "tags": ["토스트", "분식", "패스트푸드"], "rating": 5.0},
+    {"id": 39, "name": "페리카나 모현점",  "address": "경기 용인시 처인구 모현읍 외대로 36 우주빌딩 1층", "tags": ["치킨", "패스트푸드"], "rating": 5.0},
+    {"id": 40, "name": "금요일오후", "address": "경기 용인시 처인구 모현읍 외대로26번길 15-11 상가 1층", "tags": ["포장마차", "분식"], "rating": 5.0},
+    {"id": 41, "name": "하늘다리", "address": "경기 용인시 처인구 모현읍 외대로26번길 15-11", "tags": ["한식"], "rating": 0.0},
+    {"id": 42, "name": "카페문씨", "address": "경기 용인시 처인구 모현읍 외대로 34 1층", "tags": ["카페"], "rating": 1.0},
+    {"id": 43, "name": "홍루이젠 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 32-1 101호", "tags": ["홍루이젠", "패스트푸드"], "rating": 0.0},
+    {"id": 44, "name": "픽미 픽미아이스 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 32-1 102호", "tags": ["아이스크림", "디저트"], "rating": 0.0},
+    {"id": 45, "name": "컴포즈커피 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 32 104호", "tags": ["카페"], "rating": 0.0},
+    {"id": 46, "name": "중앙정육점식당", "address": "경기 용인시 처인구 모현읍 외대로 28", "tags": ["한식", "고기"], "rating": 4.0},
+    {"id": 47, "name": "고인돌", "address": "경기 용인시 처인구 모현읍 외대로26번길 3", "tags": ["카페"], "rating": 4.5},
+    {"id": 48, "name": "한신포차 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로26번길 3 1층", "tags": ["포장마차", "주점"], "rating": 0.0},
+    {"id": 49, "name": "명수당분식", "address": "경기 용인시 처인구 모현읍 외대로26번길 15-11 1층", "tags": ["분식", "패스트푸드"], "rating": 5.0},
+    {"id": 50, "name": "고인돌횟집", "address": "경기 용인시 처인구 모현읍 외대로26번길 11", "tags": ["생선", "해물"], "rating": 1.0}, 
+    {"id": 51, "name": "진성곱창", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 20-13 1층", "tags": ["고기", "한식"], "rating": 5.0},
+    {"id": 52, "name": "두찜 용인모현점", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 20-13 1층 101호", "tags": ["찜닭", "고기"], "rating": 5.0},
+    {"id": 53, "name": "장호덕손만두 용인모현점", "address": "경기 용인시 처인구 모현읍 외대로26번길 6 1층", "tags": ["만두"], "rating": 5.0},
+    {"id": 54, "name": "이가명동찌개마을 모현외대점", "address": "경기 용인시 처인구 모현읍 외대로26번길 6", "tags": ["찌개", "한식"], "rating": 3.7},
+    {"id": 55, "name": "동대문엽기떡볶이 용인모현점", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 20 1층", "tags": ["떡볶이", "분식", "패스트푸드"], "rating": 4.0},
+    {"id": 56, "name": "엄마손칼국수", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 18", "tags": ["칼국수", "한식", "양식"], "rating": 4.0},
+    {"id": 57, "name": "윤아네집밥", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 12 1층 101호", "tags": ["한식", "도시락"], "rating": 0.0},
+    {"id": 58, "name": "배스킨라빈스 용인모현점", "address": "경기 용인시 처인구 모현읍 백옥대로 2386 1층", "tags": ["디저트", "아이스크림"], "rating": 3.0},
+    {"id": 59, "name": "야미마라탕 용인점", "address": "경기 용인시 처인구 모현읍 외대로26번길 2 대종빌딩 1층", "tags": ["중식", "마라탕"], "rating": 4.0},
+    {"id": 60, "name": "피자보이 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로26번길 2 2층", "tags": ["피자", "패스트푸드"], "rating": 4.0},
+    {"id": 61, "name": "매취랑 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로26번길 2", "tags": ["감자탕", "한식"], "rating": 0.0},
+    {"id": 62, "name": "오늘의 막걸리", "address": "경기 용인시 처인구 모현읍 외대로26번길 2 201호", "tags": ["한식", "주점"], "rating": 5.0},
+    {"id": 63, "name": "펀비어킹 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로26번길 2 1층 101,102호", "tags": ["주점"], "rating": 2.3},
+    {"id": 64, "name": "미쳐버린파닭 용인외대점", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-2 1층", "tags": ["치킨", "패스트푸드"], "rating": 3.7},
+    {"id": 65, "name": "몬스터탕수육 용인모현점", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-2", "tags": ["양식", "중식"], "rating": 0.0},
+    {"id": 66, "name": "노옥다", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-4", "tags": ["카페"], "rating": 5.0},
+    {"id": 67, "name": "호가그릴", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-8", "tags": ["고기", "한식"], "rating": 2.7},
+    {"id": 68, "name": "열린세상", "address": "경기 용인시 처인구 모현읍 외대로 22", "tags": ["양식"], "rating": 0.0},
+    {"id": 69, "name": "뱅이포차", "address": "경기 용인시 처인구 모현읍 외대로 22", "tags": ["포장마차", "주점"], "rating": 0.0},
+    {"id": 70, "name": "로뎀식당", "address": "경기 용인시 처인구 모현읍 외대로 22", "tags": ["한식"], "rating": 2.5},
+    {"id": 71, "name": "곤조라멘 야끼우동전문 용인점", "address": "경기 용인시 처인구 모현읍 외대로 22", "tags": ["일식"], "rating": 5.0},
+    {"id": 72, "name": "안녕모현", "address": "경기 용인시 처인구 모현읍 외대로 20 1층", "tags": ["카페"], "rating": 5.0},
+    {"id": 73, "name": "리오브리또", "address": "경기 용인시 처인구 모현읍 외대로 20 신보빌딩 A-3호", "tags": ["브리또", "패스트푸드"], "rating": 4.7},
+    {"id": 74, "name": "오뚜기네", "address": "경기 용인시 처인구 모현읍 외대로 20", "tags": ["한식"], "rating": 0.0},
+    {"id": 75, "name": "유케야", "address": "경기 용인시 처인구 모현읍 외대로 20 1층", "tags": ["고기", "한식"], "rating": 2.0},
+    {"id": 76, "name": "갈비명가", "address": "경기 용인시 처인구 모현읍 외대로 16", "tags": ["갈비", "고기", "한식"], "rating": 5.0},
+    {"id": 77, "name": "역전할머니맥주 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 16 101호", "tags": ["주점"], "rating": 0.0},
+    {"id": 78, "name": "멕시카나치킨 용인외대점", "address": "경기 용인시 처인구 모현읍 외대로 16 가동 2층 202호", "tags": ["치킨", "패스트푸드"], "rating": 5.0},
+    {"id": 79, "name": "진미바지락칼국수", "address": "경기 용인시 처인구 모현읍 외대로 16", "tags": ["칼국수", "한식"], "rating": 5.0},
+    {"id": 80, "name": "돈비반", "address": "경기 용인시 처인구 모현읍 외대로 12", "tags": ["한식"], "rating": 5.0},
+    {"id": 81, "name": "초원얼크니샤브샤브칼국수", "address": "경기 용인시 처인구 모현읍 외대로 12 1층", "tags": ["칼국수", "한식"], "rating": 4.0},
+    {"id": 82, "name": "쭌스그릴", "address": "경기 용인시 처인구 모현읍 외대로 12", "tags": ["고기", "양식"], "rating": 5.0},
+    {"id": 83, "name": "철뚝집", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-26", "tags": ["한식"], "rating": 4.0},
+    {"id": 84, "name": "일억조", "address": "경기 용인시 처인구 모현읍 외대로 6", "tags": ["중식"], "rating": 0.0},
+    {"id": 85, "name": "BHC치킨 용인모현점", "address": "경기 용인시 처인구 모현읍 외대로 6", "tags": ["치킨", "패스트푸드"], "rating": 4.9},
+    {"id": 86, "name": "카페인중독 용인외대점", "address": "경기 용인시 처인구 모현읍 백옥대로 2390 1층", "tags": ["카페"], "rating": 5.0},
+    {"id": 87, "name": "맛나바지락칼국수", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-42", "tags": ["칼국수", "한식"], "rating": 5.0},
+    {"id": 88, "name": "대한민국을만족시킨족발 용인외대점", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 15", "tags": ["족발", "보쌈", "한식"], "rating": 0.0},
+    {"id": 89, "name": "대만족 용인외대점", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 15 1층", "tags": ["족발", "보쌈", "한식"], "rating": 0.0},
+    {"id": 90, "name": "본정뼈해장국", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 15 1층", "tags": ["해장국", "한식"], "rating": 0.0},
+    {"id": 91, "name": "자유까페", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 13-1", "tags": ["카페"], "rating": 0.0},
+    {"id": 92, "name": "달리는커피 용인한국외대점", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 13-1 1층 101호", "tags": ["카페"], "rating": 5.0},
+    {"id": 93, "name": "편안한죽 용인모현점", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 9", "tags": ["한식"], "rating": 0.0},
+    {"id": 94, "name": "백채김치찌개 용인외대점", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 9 4호", "tags": ["찌개", "한식"], "rating": 5.0},
+    {"id": 95, "name": "고기앞으로", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 9", "tags": ["고기"], "rating": 5.0},
+    {"id": 96, "name": "교촌치킨 용인모현점", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-31 1층", "tags": ["치킨", "패스트푸드"], "rating": 2.6},
+    {"id": 97, "name": "마라장룡", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-31 1층", "tags": ["중식"], "rating": 4.7},
+    {"id": 98, "name": "올댓생크림카스테라", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-37", "tags": ["카페"], "rating": 5.0},
+    {"id": 99, "name": "날으는김밥", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-41", "tags": ["분식", "패스트푸드"], "rating": 5.0},
+    {"id": 100, "name": "상원", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 21-41", "tags": ["중식"], "rating": 0.0},
+    {"id": 101, "name": "모현닭발", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 1", "tags": ["닭", "고기", "한식"], "rating": 0.0},
+    {"id": 102, "name": "제철주막", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 1", "tags": ["한식"], "rating": 0.0},
+    {"id": 103, "name": "돈피그 막갈비&삼겹살", "address": "경기 용인시 처인구 모현읍 백옥대로2384번길 1", "tags": ["고기", "한식"], "rating": 5.0},
+    {"id": 104, "name": "맘스버거", "address": "경기 용인시 처인구 모현읍 백옥대로2402번길 13", "tags": ["햄버거", "패스트푸드"], "rating": 0.0},
+    {"id": 105, "name": "토끼랑닭이랑", "address": "경기 용인시 처인구 모현읍 백옥대로2402번길 13", "tags": ["닭", "고기"], "rating": 5.0},
+    {"id": 106, "name": "제일남원추어탕", "address": "경기 용인시 처인구 모현읍 백옥대로2402번길 13", "tags": ["추어탕", "한식"], "rating": 5.0},
+    {"id": 107, "name": "모현양꼬치", "address": "경기 용인시 처인구 모현읍 백옥대로2402번길 13 1층", "tags": ["양꼬치", "고기"], "rating": 5.0},
+    {"id": 108, "name": "피자스쿨 용인모현점", "address": "경기 용인시 처인구 모현읍 백옥대로 2391 1층", "tags": ["피자", "패스트푸드"], "rating": 3.7},
+    {"id": 109, "name": "파리바게뜨 용인외대점", "address": "경기 용인시 처인구 모현읍 백옥대로 2391", "tags": ["베이커리"], "rating": 3.3},
+    {"id": 110, "name": "어도회포장전문점", "address": "경기 용인시 처인구 모현읍 백옥대로 2410", "tags": ["일식"], "rating": 0.0},
+    {"id": 111, "name": "용인면옥", "address": "경기 용인시 처인구 모현읍 백옥대로 2410 왕산빌딩 1층", "tags": ["냉면", "한식"], "rating": 2.0},
+    {"id": 112, "name": "유랑식당", "address": "경기 용인시 처인구 모현읍 백옥대로2432번길 1", "tags": ["한식"], "rating": 0.0},
+    {"id": 113, "name": "666버거 용인모현점", "address": "경기 용인시 처인구 모현읍 백옥대로2432번길 7-1 1층", "tags": ["햄버거", "패스트푸드"], "rating": 5.0},
+    {"id": 114, "name": "아인라이크", "address": "경기 용인시 처인구 모현읍 외대로25번길 45 중용센트레빌 1층 101호", "tags": ["떡", "한과", "한식"], "rating": 5.0},
+    {"id": 115, "name": "모현도야지생고기", "address": "경기 용인시 처인구 모현읍 문현로357번길 43", "tags": ["고기"], "rating": 0.0},
+    {"id": 116, "name": "도노떡볶이", "address": "경기 용인시 처인구 모현읍 문현로 352", "tags": ["떡볶이", "분식", "패스트푸드"], "rating": 4.7},
+    {"id": 117, "name": "또봉이통닭 경기용인왕산신안점", "address": "경기 용인시 처인구 모현읍 문현로 352 1층", "tags": ["치킨", "패스트푸드"], "rating": 1.0},
+    {"id": 118, "name": "몬드", "address": "경기 용인시 처인구 모현읍 문현로 348", "tags": ["한식"], "rating": 0.0},
+    {"id": 119, "name": "커피베이 외대용인점", "address": "경기 용인시 처인구 모현읍 문현로 348", "tags": ["카페"], "rating": 5.0},
+    {"id": 120, "name": "원할머니보쌈족발 용인모현점", "address": "경기 용인시 처인구 모현읍 문현로 348 용인소상공인회관 203호", "tags": ["보쌈", "족발", "한식"], "rating": 0.0},
+    {"id": 121, "name": "바로덮밥", "address": "경기 용인시 처인구 모현읍 문현로 348 용인가구회관 101호", "tags": ["한식"], "rating": 0.0},
+    {"id": 122, "name": "바로파스타 용인모현점", "address": "경기 용인시 처인구 모현읍 문현로 348", "tags": ["양식"], "rating": 0.0},
+    {"id": 123, "name": "산채가 용인점", "address": "경기 용인시 처인구 모현읍 문현로 337 1층", "tags": ["한식"], "rating": 4.7},
+    {"id": 124, "name": "카페라구", "address": "경기 용인시 처인구 모현읍 문현로 337 1층", "tags": ["카페"], "rating": 5.0},
+    {"id": 125, "name": "드루와", "address": "경기 용인시 처인구 모현읍 문현로 337 2층", "tags": ["호프", "주점"], "rating": 0.0},
+    {"id": 126, "name": "처갓집양념치킨 모현점", "address": "경기 용인시 처인구 모현읍 문현로 331 신안아파트상가102호", "tags": ["치킨", "패스트푸드"], "rating": 1.0},
+    {"id": 127, "name": "마이요거트립 용인모현점", "address": "경기 용인시 처인구 모현읍 문현로 331 1층 102호", "tags": ["디저트", "카페"], "rating": 0.0},
+    {"id": 128, "name": "스시어게인", "address": "경기 용인시 처인구 모현읍 문현로 330 1층", "tags": ["초밥", "일식"], "rating": 4.0},
+    {"id": 129, "name": "에그파파 모현점", "address": "경기 용인시 처인구 모현읍 문현로 330", "tags": ["치킨", "패스트푸드"], "rating": 0.0},
+    {"id": 130, "name": "무적", "address": "경기 용인시 처인구 모현읍 문현로 330 효천마을신안인스빌2단지아파트 상가동 1층 102호", "tags": ["일식"], "rating": 5.0},
+    {"id": 131, "name": "과시탐탐", "address": "경기 용인시 처인구 모현읍 외대로26번길 22 1층", "tags": ["카페"], "rating": 5.0},
+    {"id": 132, "name": "이태리식당", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 9-6 1층", "tags": ["이탈리안", "양식"], "rating": 4.4},
+    {"id": 133, "name": "어썸모어케이크", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 9-11 2층", "tags": ["베이커리"], "rating": 0.0},
+    {"id": 134, "name": "향기가득카페촌 모현도서관점", "address": "경기 용인시 처인구 모현읍 백옥대로 2378 지하1층", "tags": ["카페"], "rating": 0.0},
+    {"id": 135, "name": "맛나옹심이메밀칼국수", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 7-1 1층", "tags": ["칼국수", "한식"], "rating": 4.9},
+    {"id": 136, "name": "모현포차", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 7-9", "tags": ["한식"], "rating": 0.0},
+    {"id": 137, "name": "피자나라치킨공주 용인모현외대점", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 7-9 1층", "tags": ["피자", "치킨", "패스트푸드"], "rating": 5.0},
+    {"id": 138, "name": "카페코지", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 10-25", "tags": ["카페"], "rating": 5.0},
+    {"id": 139, "name": "행복한한끼", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 10-33", "tags": ["한식"], "rating": 0.0},
+    {"id": 140, "name": "미가초밥", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 10", "tags": ["일식"], "rating": 4.5},
+    {"id": 141, "name": "응응스크르 용인모현점", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 10 202호", "tags": ["아이스크림", "디저트"], "rating": 0.0},
+    {"id": 142, "name": "홍's", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 10-4", "tags": ["분식", "패스트푸드"], "rating": 0.0},
+    {"id": 143, "name": "찌찌닭발", "address": "경기 용인시 처인구 모현읍 백옥대로2366번길 10-6", "tags": ["닭", "고기"], "rating": 3.0},
+    {"id": 144, "name": "원조장충동왕족발", "address": "경기 용인시 처인구 모현읍 백옥대로 2358", "tags": ["족발", "한식"], "rating": 0.0},
+    {"id": 145, "name": "조개아줌마광어아저씨", "address": "경기 용인시 처인구 모현읍 백옥대로 2358", "tags": ["한식"], "rating": 0.0},
+    {"id": 146, "name": "맛나통닭", "address": "경기 용인시 처인구 모현읍 백옥대로 2358", "tags": ["치킨", "패스트푸드"], "rating": 0.0},
+    {"id": 147, "name": "거농회센타", "address": "경기 용인시 처인구 모현읍 백옥대로 2358", "tags": ["회", "생선"], "rating": 0.0},
+    {"id": 148, "name": "왕산돈까스", "address": "경기 용인시 처인구 모현읍 백옥대로 2349 1층", "tags": ["돈까스", "양식"], "rating": 3.6},
+    {"id": 149, "name": "흑돼지촌", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-25", "tags": ["고기", "한식"], "rating": 5.0},
+    {"id": 150, "name": "까로체리아", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-31", "tags": ["카페"], "rating": 0.0},
+    {"id": 151, "name": "초막", "address": "경기 용인시 처인구 모현읍 왕담로 160", "tags": ["한식"], "rating": 5.0},
+    {"id": 152, "name": "삼부자생고기", "address": "경기 용인시 처인구 모현읍 백옥대로 2324 1층", "tags": ["고기", "한식"], "rating": 4.5},
+    {"id": 153, "name": "고향촌", "address": "경기 용인시 처인구 모현읍 백옥대로 2324", "tags": ["갈비", "고기", "한식"], "rating": 4.2},
+    {"id": 154, "name": "산아래버섯마을", "address": "경기 용인시 처인구 모현읍 독점로 31-6", "tags": ["한식"], "rating": 0.0},
+    {"id": 155, "name": "먹을담", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-21 1층", "tags": ["한식"], "rating": 0.0},
+    {"id": 156, "name": "미스코", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-21 1층", "tags": ["샌드위치", "패스트푸드"], "rating": 0.0},
+    {"id": 157, "name": "그집곱닭도리탕 용인외대점", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-21 1층", "tags": ["닭", "고기", "한식"], "rating": 0.0},
+    {"id": 158, "name": "밤밤피자 용인모현점", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-21 1층 106호", "tags": ["피자", "패스트푸드"], "rating": 0.0},
+    {"id": 159, "name": "미락", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-13 1층", "tags": ["해물", "생선"], "rating": 0.0},
+    {"id": 160, "name": "헝그리파닭", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-13", "tags": ["치킨"], "rating": 0.0},
+    {"id": 161, "name": "산채가", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-13", "tags": ["한식"], "rating": 0.0},
+    {"id": 162, "name": "장터해장국", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-13", "tags": ["해장국", "한식"], "rating": 0.0},
+    {"id": 163, "name": "싱그러움", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 9 쉐르빌 101동 101호", "tags": ["카페"], "rating": 5.0},
+    {"id": 164, "name": "티바두마리치킨 모현점", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 21-9 1층", "tags": ["치킨", "패스트푸드"], "rating": 0.0},
+    {"id": 165, "name": "사랑채 ", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 15", "tags": ["한식"], "rating": 0.0},
+    {"id": 166, "name": "예떡분식까페", "address": "경기 용인시 처인구 모현읍 백옥대로2332번길 17", "tags": ["분식", "패스트푸드"], "rating": 5.0}
+]
+
+# 특정 태그가 포함된 항목을 필터링
+def filter_by_tag(tag):
+    return [entry for entry in database if tag in entry["tags"]]
+
+# 평점 순으로 정렬 후 상위 10개 항목 반환
+def get_top_rated_addresses(filtered_addresses):
+    return sorted(filtered_addresses, key=lambda x: x["rating"], reverse=True)[:10]
+
+def get_top_rated_names(filtered_names):
+    return sorted(filtered_names, key=lambda x: x["rating"], reverse=True)[:10]
+
+# 태그를 기준으로 검색할 주소 목록을 필터링
+search_tag = input("검색할 태그를 입력하세요: ")
+filtered_addresses = filter_by_tag(search_tag)
+filtered_names = filter_by_tag(search_tag)
+if not filtered_addresses:
+    print(f"'{search_tag}' 태그를 가진 항목이 없습니다.")
+else:
+    top_addresses = get_top_rated_addresses(filtered_addresses)
+    top_names = get_top_rated_names(filtered_names)
+    # 필터링된 결과 출력
+    print(f"'{search_tag}' 태그를 가진 주소 목록 (평점 순 상위 10개):")
+    for entry in top_addresses:
+        print(f"ID: {entry['id']}, Address: {entry['address']}, Tags: {', '.join(entry['tags'])}, Rating: {entry['rating']}")
+
+    search_id = int(input("검색할 주소의 ID를 입력하세요: "))
+    search_address = next((entry["address"] for entry in top_addresses if entry["id"] == search_id), None)
+    search_name = next((entry["name"] for entry in top_names if entry["id"] == search_id), None)
+
+    check_search = str(input("주소로 검색하려면 add를, 이름으로 검색하려면 name을 치세요: "))
+    if check_search == "add":
+        if search_address is None:
+            print("해당 ID에 대한 주소를 찾을 수 없습니다.")
+        else:
+            driver = webdriver.Chrome()
+
+            # 지도 페이지 열기
+            driver.get('https://map.kakao.com/')
+            time.sleep(4)
+
+            # 검색창에 검색어 입력
+            search = driver.find_element(By.XPATH, r'/html/body/div[5]/div[1]/div/div/ul/li[2]/a')
+            search.send_keys(Keys.ENTER)
+            time.sleep(4)
+            search_box = driver.find_element(By.XPATH, r'/html/body/div[5]/div[2]/div[2]/div[1]/div/div[1]/div[2]/form/input[1]')
+            search_box.send_keys(departure)
+            search_box.send_keys(Keys.ENTER)
+            time.sleep(4)
+            search_box = driver.find_element(By.XPATH, r'/html/body/div[5]/div[2]/div[2]/div[1]/div/div[2]/div[2]/form/input[1]')
+            search_box.send_keys(search_address)
+            search_box.send_keys(Keys.ENTER)
+            time.sleep(4)
+            search = driver.find_element(By.XPATH, r'/html/body/div[5]/div[2]/div[2]/div[2]/div/a[2]')
+            time.sleep(4)
+            search.send_keys(Keys.ENTER)
+            # 일정 시간 대기 (지도가 로드되기를 기다리기 위해)
+            wait_for_results(driver)
+
+            checkInput = input("종료를 원하신다면 Enter를 누르세요.")
+            if checkInput == '':
+                driver.quit()
+
+    if check_search == "name":
+        if check_search is None:
+            print("해당 ID에 대한 이름을 찾을 수 없습니다.")
+        else:
+            driver = webdriver.Chrome()
+
+            # 지도 페이지 열기
+            driver.get('https://map.kakao.com/')
+            time.sleep(3)
+
+            # 검색창에 검색어 입력
+            search_box = driver.find_element(By.XPATH, r'//*[@id="search.keyword.query"]')
+            search_box.send_keys(search_name)
+            driver.find_element(By.XPATH, r'//*[@id="search.keyword.submit"]').send_keys(Keys.ENTER)
+
+            # 일정 시간 대기 (지도가 로드되기를 기다리기 위해)
+            wait_for_results(driver)
+
+            checkInput = input("종료를 원하신다면 Enter를 누르세요.")
+            if checkInput == '':
+                driver.quit()
