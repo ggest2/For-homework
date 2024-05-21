@@ -1,6 +1,6 @@
 from django.db import models
 
-class restaurant(models.Model):
+class Restaurant(models.Model):
     name = models.TextField()
     tags = models.TextField()
     rating = models.IntegerField()
