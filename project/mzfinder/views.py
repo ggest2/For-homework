@@ -1,5 +1,7 @@
-from django.http import HttpResponse
-
+from django.shortcuts import render
+from .models import Restaurant
 
 def index(request):
-    return HttpResponse("안녕하세요 pybo에 오신것을 환영합니다.")
+    return render(request, 'mzfinder/mainPage.html')
+def korean(request):
+    return render(request, 'mzfinder/korean.html')
