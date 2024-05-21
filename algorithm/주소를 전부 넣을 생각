@@ -213,7 +213,7 @@ else:
     search_address = next((entry["address"] for entry in top_addresses if entry["id"] == search_id), None)
     search_name = next((entry["name"] for entry in top_names if entry["id"] == search_id), None)
 
-    check_search = str(input("주소로 검색하려면 add를, 이름으로 검색하려면 name을 치세요."))
+    check_search = str(input("주소로 검색하려면 add를, 이름으로 검색하려면 name을 치세요: "))
     if check_search == "add":
         if search_address is None:
             print("해당 ID에 대한 주소를 찾을 수 없습니다.")
