@@ -1,10 +1,11 @@
+14조
 팀명:프론티어(fronTIer)
 조원:
 1)유현규(ggest22),https://github.com/ggest2/For-homework
 2)안수빈(suvin923), https://github.com/suvin923/open-source-SW
 3)이동욱(dwlee7808), https://github.com/dwlee7808/For-homework
 4)윤장욱(yoon-janguk),https://github.com/yoon-janguk/For-homework
-프로젝트:용인 주변 맛집 추천 웹 사이트 제작
+프로젝트:용인 주변 맛집 추천 웹 사이트 제작(MZ finder)
 현재 진행상황: 개발
 
 비고: 동시에 python을 통한 웹사이트 제작을 위해서 django를 사용하고자 함
@@ -13,9 +14,9 @@
 공지
 1) 카카오 API 63a142aa5759e27bd31a9d230c675ddb
 2) 카카오 맵에 자동으로 경로 검색해주는 기능 추가(자동으로 길찾기), 그냥 맵에 띄어주는 기능(마커) 주소기반입니다.
-3)django 사용확인 완료
+3) django 사용확인 완료
 4) 디자인은 주말내로 완성 예정 (로고는 소형과 중형 투명이미지 제작 예정)
-5) 룰렛 이슈란에 올려두었습니다.
+5) 룰렛 디자인 이슈란에 올려두었습니다. 회전 표현을 위해 더 필요하다면 연락 주세요.
 6) 추가적인 변경사항이 있다면 카톡에 연락해주세요.
 
 해당 부분 아래에 다른 조원에 대한 요구 사항이나 진행 정도 같은 걸 적어 주셔도 됩니다.
