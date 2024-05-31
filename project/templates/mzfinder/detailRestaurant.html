@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load mzfinder_filter%}
+{% load static%}
+{%block content%}
+<body>
+    <div class ='introduceRestaurant'>
+        <div class ='front'>
+            {% if restaurant.imgSrc %}
+            <img width = '194px' height = '194px' src={{restaurant.imgSrc}}>
+            {% else %}
+            {% with src=restaurant.tags|makeSrc%}
+            <img width = '194px' height = '194px' src={% static src%}>
+            {% endwith%}
+            {% endif %}
+        </div>
+        <div class = 'medium'>
+            <span class ='restaurantName'>{{restaurant.name}}</span>
+            <form class = 'like' action="{% url 'mzfinder:addLike' restaurant.name %}" method="post">
+                {% csrf_token %}
+                <input class ='likeInput' type="submit" value=''>
+                <span>{{restaurant.rating}}</span>
+            </form>
+            <span class ='restaurantAdress'>주소 : {{restaurant.adress}}</span>
+            <span class ='restaurantCallNumber'>전화번호 : {{restaurant.callNumber}}</span>
+        </div>
+        <div class ='back'>
+            <a>Map</a>
+            <a>Road</a>
+        </div>
+    </div>
+   
+</div>
+    <form action="{% url 'mzfinder:createReview' restaurant.name %}" method="post">
+        {% csrf_token %}
+        <textarea name="content" id="content" rows="15"></textarea>
+        <input type="submit" value="답변등록">
+    </form>
+    <ul>
+    {% for review in restaurant.review_set.all %}
+        <li>{{ review.content }}</li>
+    {% endfor %}
+    </ul>
+</body>
+{%endblock%}
+</html>
