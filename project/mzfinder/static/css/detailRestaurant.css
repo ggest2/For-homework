@@ -1,0 +1,62 @@
+.introduceRestaurant{
+    display: flex;
+    flex-direction: row;
+    border-bottom:3px rgb(183,38,25) solid;
+    
+    
+}
+.introduceRestaurant > div{
+    display: flex;
+    flex-direction: column;
+}
+
+.introduceRestaurant > .medium{
+    margin-left: 70px;
+
+}
+.restaurantName{
+    font-size:50px;
+    font-family: "Black Han Sans", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+.likeInput{
+    background: url(../img/like.png) no-repeat center;
+    width: 50px;
+    height: 50px;
+    background-size: 50px;
+    border:0px;
+}
+.like{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+.like > span{
+    color:rgb(183,38,25);
+    font-size: 20px;
+}
+.restaurantAdress{
+    margin-bottom:20px;
+}
+.introduceRestaurant > .back{
+    display:  flex;
+    flex-direction: column;
+    justify-content: right;
+    align-items: center;
+    border-right:3px rgb(183,38,25) solid;
+    width: 200px;
+}
+.introduceRestaurant > .back > a{
+    color: rgb(211,45,31);
+    background-color: rgb(242,163,230);
+    border:2px rgb(211,45,31) solid;
+    width: 130px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}

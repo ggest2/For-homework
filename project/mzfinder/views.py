@@ -15,7 +15,7 @@ def index(request):
 def restaurant(request,tag):
     page = request.GET.get('page', '1')
     restaurants = get_list_or_404(Restaurant, tags=tag)
-    paginator = Paginator(restaurants, 10)
+    paginator = Paginator(restaurants, 20)
     page_obj = paginator.get_page(page)
     context = {'tag':tag,'restaurants':page_obj}
     return render(request, 'mzfinder/restaurants.html',context)

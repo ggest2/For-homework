@@ -1,0 +1,65 @@
+{% extends 'base.html'%}
+{% load static %}
+{%block content%}
+<body>
+    <div class='main'>
+    <div class='foodTypes' >
+        <div class='firstLine'>
+            {% with tags='KOREAN'%} 
+            <a id ='foodType' href="{% url 'mzfinder:restaurants' tags%}">
+                <span id = 'foodTypeName'>{{tags}}</span>
+            </a>
+            {% endwith %}
+            {% with tags='WESTERN'%} 
+            <a id ='foodType' href="{% url 'mzfinder:restaurants' tags%}">
+                <span id = 'foodTypeName'>{{tags}}</span>
+            </a>
+            {% endwith %}
+            {% with tags='JAPANESE'%} 
+            <a id ='foodType' href="{% url 'mzfinder:restaurants' tags%}">
+                <span id = 'foodTypeName'>{{tags}}</span>
+            </a>
+            {% endwith %}
+            {% with tags='CHINESE'%} 
+            <a id ='foodType' href="{% url 'mzfinder:restaurants' tags%}">
+                <span id = 'foodTypeName'>{{tags}}</span>
+            </a>
+            {% endwith %}
+            {% with tags='DESSERT'%} 
+            <a id ='foodType' href="{% url 'mzfinder:restaurants' tags%}">
+                <span id = 'foodTypeName'>{{tags}}</span>
+            </a>
+            {% endwith %}
+            {% with tags='DRINKING'%} 
+            <a id ='foodType' href="{% url 'mzfinder:restaurants' tags%}">
+                <span id = 'foodTypeName'>{{tags}}</span>
+            </a>
+            {% endwith %}
+            {% with tags='GUITAR'%} 
+            <a id ='foodType' href="{% url 'mzfinder:restaurants' tags%}">
+                <span id = 'foodTypeName'>{{tags}}</span>
+            </a>
+            {% endwith %}
+        </div>
+    </div>
+    <div class='mainRight'>
+        <div class ='function'>
+        <a href = '{% url 'mzfinder:randomRecommend' %}'class='recommendRandomly'>
+            <span>ROULETTE</span>
+        </a>
+        <a href = '{% url 'mzfinder:randomRecommend' %}'class='map'>
+            <span>MAP</span>
+        </a>
+        </div>
+        <div class = 'pageIntroduce'>
+            <span>MZ FINER IS A “MAT ZEEP” FINER THAT RECOMMENDS</span>
+            <br>
+            <span>RESTAURANTS AROUND CAMPUS. OUR SITE  ALSO PROVIDES</span>
+            <br>
+            <span>MO-HYEON MAP AND REVIEW SERVICES.</span>
+        </div>
+    </div>
+</div>
+</body>
+{% endblock %}
+</html>

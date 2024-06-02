@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<span>{{restaurant.name}}</span>
+<form action="{% url 'mzfinder:randomRecommend' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="메뉴 랜덤 추천">
+</form>
+{% endblock %}

@@ -1,0 +1,85 @@
+
+body{
+    height: 100vh;
+    box-sizing: border-box;
+    padding-top:130px;
+    background-color: white;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    color:black;
+}
+.logo{
+    font-size:40px;
+    color:white;
+    background-color: rgb(0,0,0,0);
+    border:0px;
+    z-index: 1;
+    
+    
+}
+.smallLogo{
+    font-size:20px;
+    color:white;
+    background-color: rgb(0,0,0,0);
+    border:0px;
+    z-index: 1;
+    position:absolute;
+    left:5px;
+    top:5px;
+}
+.foodType{
+    z-index: 1;
+    background-color: rgb(156,31,20);
+    position:fixed;
+    top:0px;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 130px;
+}
+.foodTypeText{
+    font-size:50px;
+    font-family: "Black Han Sans", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    color:white;
+}
+.options{
+    z-index: 1;
+    width: 30;
+    position:absolute;
+    right:30px;
+}
+.options > .top{
+    width:40px;
+    height: 10px;
+    border-top:3px white solid;
+    border-bottom: 3px white solid;
+}
+.options > .bottom{
+    width:40px;
+    height: 10px;
+    border-bottom: 3px white solid;
+}
+.options > ul{
+    z-index: 1;
+    position: absolute;
+    display: none;
+    top:29px;
+    right: 0px;
+}
+.options:hover > ul{
+    display: block;
+}
+.options > ul > li{
+    color:white;
+}
+*{
+    margin:0px;
+    padding:0px;
+}
