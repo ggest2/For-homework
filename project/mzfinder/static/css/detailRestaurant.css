@@ -1,62 +1,153 @@
-.introduceRestaurant{
-    display: flex;
-    flex-direction: row;
-    border-bottom:3px rgb(183,38,25) solid;
-    
-    
-}
-.introduceRestaurant > div{
+.detailRestaurant{
     display: flex;
     flex-direction: column;
+    height: 100%;
+}
+.introduceRestaurant {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 3px rgb(183, 38, 25) solid;
+}
+.introduceRestaurant > div {
+  display: flex;
+  flex-direction: column;
 }
 
-.introduceRestaurant > .medium{
-    margin-left: 70px;
+.introduceRestaurant > .medium {
+  margin-left: 70px;
+}
+.restaurantName {
+  font-size: 50px;
+  font-family: "Black Han Sans", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+.likeInput {
+  background: url(../img/like.png) no-repeat center;
+  width: 50px;
+  height: 50px;
+  background-size: 50px;
+  border: 0px;
+}
+.like {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+.like > span {
+  color: rgb(183, 38, 25);
+  font-size: 20px;
+}
+.restaurantAdress {
+  margin-bottom: 20px;
+}
+.introduceRestaurant > .back {
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  align-items: center;
+  border-right: 3px rgb(183, 38, 25) solid;
+  width: 200px;
+}
+.introduceRestaurant > .back > a {
+  color: rgb(211, 45, 31);
+  background-color: rgb(242, 163, 230);
+  border: 2px rgb(211, 45, 31) solid;
+  width: 130px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.reviewBox {
+  display: flex;
+  flex-direction: row;
+  flex-grow:1;
+  background-color: rgb(183, 38, 25);
+}
+.showReview {
+  width: 50%;
+  border-right: 2px white solid;
+  overflow-y: 50px;
+  display:flex;
+  flex-direction: column;
+}
+.showReview > span {
+  display: block;
+  border-bottom: 2px white solid;
+  color: white;
+  font-size: 30px;
+  font-family: "Black Han Sans", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.showReview > ul {
+    flex-grow: 1;
+    height: 0px;
+    overflow-y: scroll; 
+}
+.showReview > ul > .review {
+  width: 100%;
+  height: 150px;
+  border-bottom: 2px white solid;
+  position:relative;
+  display: table;
 
 }
-.restaurantName{
-    font-size:50px;
-    font-family: "Black Han Sans", sans-serif;
-    font-weight: 300;
-    font-style: normal;
+.showReview > ul > .review > .userName {
+  color: white;
+  font-size: 23px;
 }
-.likeInput{
-    background: url(../img/like.png) no-repeat center;
-    width: 50px;
-    height: 50px;
-    background-size: 50px;
-    border:0px;
+.showReview > ul > .review > .reviewContent {
+  color: white;
+  font-size: 17px;
+  margin-bottom:30px;
 }
-.like{
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
+.showReview > ul > .review > .reviewDate {
+    color: white;
+    position:absolute;
+    bottom: 0px;
+    right: 3px;
+    font-size:15px;
+  }
+.changeReview{
+  position:absolute;
+  bottom:5px;
+  left:5px;
 }
-.like > span{
-    color:rgb(183,38,25);
-    font-size: 20px;
+.changeReview > a{
+  color:white;
 }
-.restaurantAdress{
-    margin-bottom:20px;
+.createReview {
+  width: 50%;
+  position: relative;
 }
-.introduceRestaurant > .back{
-    display:  flex;
-    flex-direction: column;
-    justify-content: right;
-    align-items: center;
-    border-right:3px rgb(183,38,25) solid;
-    width: 200px;
+.createReview > form > textarea {
+  width: 100%;
+  resize: none;
+  border: none;
+  font-size: 20px;
+  background-color: rgb(183, 38, 25);
+  color:white;
 }
-.introduceRestaurant > .back > a{
-    color: rgb(211,45,31);
-    background-color: rgb(242,163,230);
-    border:2px rgb(211,45,31) solid;
-    width: 130px;
-    height: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
+.createReview > form  >input {
+  border: 1px rgb(211, 45, 31) solid;
+  color: rgb(211, 45, 31);
+  background-color: rgb(242, 163, 230);
+  font-size: 20px;
+  height: 35px;
+  width: 200px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.createReview > form > textarea::placeholder{
+    color:white;
 }

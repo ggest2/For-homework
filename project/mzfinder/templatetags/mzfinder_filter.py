@@ -1,5 +1,7 @@
 from django import template
-from mzfinder.models import Menu
+from mzfinder.models import Restaurant, Menu
+
+from django.contrib.auth.models import User
 
 register = template.Library()
 
@@ -18,3 +20,16 @@ def makeSrc(tag):
 @register.filter
 def findMenu(name):
     return Menu.objects.filter(restaurant_id=name)
+
+@register.filter
+def findRestaurant(name):
+    restaurant = Restaurant.objects.get(id=name)
+    return restaurant
+
+@register.filter
+def findUser(name):
+    user = User.objects.get(id=name)
+    return user
+@register.filter
+def returnRestaurant(name):
+    return name.id

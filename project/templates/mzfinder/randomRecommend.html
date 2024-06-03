@@ -1,8 +1,40 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
+{% load static %}
 {% block content %}
-<span>{{restaurant.name}}</span>
-<form action="{% url 'mzfinder:randomRecommend' %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="메뉴 랜덤 추천">
-</form>
+<div class ="main rouletteMain">
+  <div class ="left">
+  
+  </div>
+  <div class="center">
+    <span>메뉴 고민은 그만!</span>
+    <span>룰렛을 돌려 맛있는 결정을 내리세요!</span>
+    <img height="400px"src={% static "img/menu1.png"%} id = "roulette"> 
+    <form id="rouletteForm" action="{% url 'mzfinder:randomRecommend' %}" method="post">
+      {% csrf_token %}
+      <input type="submit" id="start" value="ROULETTE"/>
+    </form>
+  </div>
+  <span class="rouletteResult">{{restaurant.name}}</span>
+</div>
+{% endblock %}
+{% block script%}
+<script type="text/javascript">
+  var imgArray=new Array();
+  imgArray[0]="/Users/yoon_janguk/Desktop/openSource/For-homework/project/mzfinder/static/img/menu2.png";
+  imgArray[1]="/Users/yoon_janguk/Desktop/openSource/For-homework/project/mzfinder/static/img/menu2.png";
+  imgArray[2]="/Users/yoon_janguk/Desktop/openSource/For-homework/project/mzfinder/static/img/menu2.png";
+  imgArray[3]="/Users/yoon_janguk/Desktop/openSource/For-homework/project/mzfinder/static/img/menu2.png";
+
+  function changeImage() {
+    currentIndex = (currentIndex + 1) % imgArray.length;
+    document.getElementById('roulette').src = imgArray[currentIndex];
+}
+    document.getElementById('start').addEventListener('submit', function(event) {
+    event.preventDefault();
+    changeImage(); 
+    setTimeout(function() {
+        document.getElementById('rouletteForm').submit(); 
+    }, 100);
+});
+</script>
 {% endblock %}

@@ -62,7 +62,7 @@
     color: white;
     font-size:30px;
 }
-.recommendRandomly, .map{
+.recommendRandomly, .community{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -71,7 +71,7 @@
     font-weight: 300;
     font-style: normal;
     font-size:40px;
-    width:270px;
+    width:300px;
     height: 80px;
     color:white;
     border:3px white solid;
