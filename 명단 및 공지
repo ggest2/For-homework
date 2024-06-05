@@ -6,7 +6,7 @@
 3)이동욱(dwlee7808), https://github.com/dwlee7808/For-homework
 4)윤장욱(yoon-janguk),https://github.com/yoon-janguk/For-homework
 프로젝트:용인 주변 맛집 추천 웹 사이트 제작(MZ finder)
-현재 진행상황: 발표자료 제작
+현재 진행상황: 발표
 
 데모 발표 역할
 이동욱: 발표 및 부스관리
@@ -15,9 +15,9 @@
 윤장욱: 코드 마무리
 
 ppt도 이미지에 올려두었습니다.
-ppt 수정에 대해서는 10시까지 얘기해주세요.
 최종 보고서 초안 작성은 데모 발표 직후 할 예정입니다.
 contribution table에 관해 일요일 날에 최종확인 한 후 최종 보고서를 제출할 것입니다.
+조별 평가 17조만 남았습니다.
 
 비고: 동시에 python을 통한 웹사이트 제작을 위해서 django를 사용하고자 함
 주기적으로 sync fork를 통해서 레포지터리를 업데이트 해주세요.
