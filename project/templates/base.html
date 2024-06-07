@@ -1,68 +1,139 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href='{% static 'css/base.css' %}'>
-    <link rel="stylesheet" href='{% static 'css/restaurants.css' %}'>
-    <link rel="stylesheet" href='{% static 'css/mainPage.css' %}'>
+  <head>
+    <link rel="stylesheet" href='{% static 'css/base.css' %}'> 
+    <link rel="stylesheet" href='{% static 'css/restaurants.css' %}'> 
+    <link rel="stylesheet" href='{% static 'css/mainPage.css' %}'> 
     <link rel="stylesheet" href='{% static 'css/detailRestaurant.css' %}'>
+    <link rel="stylesheet" href='{% static 'css/randomRecommend.css' %}'>
+    <link rel="stylesheet" href='{% static 'css/reviewFrom.css' %}'>
+    <link rel="stylesheet" href='{% static 'css/createCommunity.css' %}'>
+    <link rel="stylesheet" href='{% static 'css/community.css' %}'>
+    <link rel="stylesheet" href='{% static 'css/login.css' %}'>
+    <link rel="stylesheet" href='{% static 'css/signup.css' %}'>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"
+      rel="stylesheet"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class ='foodType'>
-        {% if tag %}
-        <span class ='foodTypeText'>{{tag}}</span>
-        <button type="button" class ='smallLogo' onClick="location.href={% url 'mzfinder:main'%}">
-            <span>mz finder</span>
-        </button> 
-        {% else %}
-        <button type="button" class ='logo' onClick="location.href={% url 'mzfinder:main'%}">
-            <span>mz finder</span>
-        </button> 
-        {% endif %}
-        <div class ='options'>
-            <div class ='top'></div>
-            <div class ='bottom'></div>
+    <link href="https://fonts.googleapis.com/css2?family=Moirai+One&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="foodType">
+      <div class = "user">
+            {% if user.is_authenticated %}
+            <a href="{% url 'common:logout' %}"
+              >{{ user.username }} (로그아웃)</a
+            >
+            {% else %}
+            <a href="{% url 'common:login' %}">로그인</a>
+            {% endif %}
+            {% if not user.is_authenticated %}
+            <a href="{% url 'common:signup' %}"
+              >회원가입</a
+            >
+            {% endif %}
+          </div>
+      {% if tag %}
+      <span class="foodTypeText">{{tag}}</span>
+      <button
+        type="button"
+        class="smallLogo"
+        onClick="location.href={% url 'mzfinder:main'%}"
+      >
+        <span>mz finder</span>
+      </button>
+      {% else %}
+      <button
+        type="button"
+        class="logo"
+        onClick="location.href={% url 'mzfinder:main'%}"
+      >
+        <span>mz finder</span>
+      </button>
+      {% endif %}
+      <div class="navRight">
+      <div class ="serchBox">
+                <input type="text" id="search_kw" placeholder="검색할 식당을 입력하세요"  value="{{ kw|default_if_none:'' }}">
+                <button type="button" id="btn_search"></button>
+        <form id="searchForm" method="get" action="{% url 'mzfinder:findRestaurants' %}">
+          <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
+          <input type="hidden" id="page" name="page" value="{{ page }}">
+        </form>
+      </div>
+      <div class="options">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <ul>
+          <li>
+            종류별 식당
             <ul>
-                <li>종류별 식당
-                    <ul>
-                        <li><a href="{% url 'mzfinder:restaurants' 'KOREAN'%}">KOREAN</a></li>
-                        <li><a href="{% url 'mzfinder:restaurants' 'WESTERN'%}">WESTERN</a></li>
-                        <li><a href="{% url 'mzfinder:restaurants' 'JAPANESE'%}">JAPANESE</a></li>
-                        <li><a href="{% url 'mzfinder:restaurants' 'CHINESE'%}">CHINESE</a></li>
-                        <li><a href="{% url 'mzfinder:restaurants' 'DESSERT'%}">DESSERT</a></li>
-                        <li><a href="{% url 'mzfinder:restaurants' 'DRINKING'%}">DRINKING</a></li>
-                        <li><a href="{% url 'mzfinder:restaurants' 'GUITAR'%}">GUITAR</a></li>
-                    </ul>
-                </li>
-                <li>사용자
-                    <ul>
-                        <li>
-                            {% if user.is_authenticated %}
-                                <a class="nav-link" href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>
-                            {% else %}
-                                <a class="nav-link" href="{% url 'common:login' %}">로그인</a>
-                            {% endif %}
-                        </li>
-                        
-                        <li>
-                            {% if not user.is_authenticated %}
-                            <a class="nav-link" href="{% url 'common:signup' %}">회원가입</a>
-                            {% endif %}
-                        </li>
-                    </ul>
-                </li>
-                <li>추가기능
-                    <ul>
-                        <li><a href="{% url 'mzfinder:restaurants' '한식'%}">메뉴 랜덤 추천</a></li>
-                        <li><a href="{% url 'mzfinder:restaurants' '한식'%}">메뉴 가격별 추천</a></li> 
-                    </ul>
-                </li>
+              <li>
+                <a href="{% url 'mzfinder:restaurants' 'KOREAN'%}">KOREAN</a>
+              </li>
+              <li>
+                <a href="{% url 'mzfinder:restaurants' 'WESTERN'%}">WESTERN</a>
+              </li>
+              <li>
+                <a href="{% url 'mzfinder:restaurants' 'JAPANESE'%}"
+                  >JAPANESE</a
+                >
+              </li>
+              <li>
+                <a href="{% url 'mzfinder:restaurants' 'CHINESE'%}">CHINESE</a>
+              </li>
+              <li>
+                <a href="{% url 'mzfinder:restaurants' 'DESSERT'%}">DESSERT</a>
+              </li>
+              <li>
+                <a href="{% url 'mzfinder:restaurants' 'DRINKING'%}"
+                  >DRINKING</a
+                >
+              </li>
+              <li>
+                <a href="{% url 'mzfinder:restaurants' 'GUITAR'%}">GUITAR</a>
+              </li>
             </ul>
-        </div>
+          </li>
+          <li>
+            추가기능
+            <ul>
+              <li>
+                <a href="{% url 'mzfinder:randomRecommend'%}"
+                  >ROULETTE</a
+                >
+              </li>
+              <li>
+                <a href="{% url 'mzfinder:community'%}"
+                  >COMMUNITY</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
     {% block content%}{% endblock %}
-</body>
+    {% block script %}{% endblock %}
+  <script type='text/javascript'>
+  const page_elements = document.getElementsByClassName("page-link");
+  Array.from(page_elements).forEach(function(element) {
+      element.addEventListener('click', function() {
+          document.getElementById('page').value = this.dataset.page;
+          document.getElementById('searchForm').submit();
+      });
+  });
+  const btn_search = document.getElementById("btn_search");
+  btn_search.addEventListener('click', function() {
+      document.getElementById('kw').value = document.getElementById('search_kw').value;
+      document.getElementById('page').value = 1;
+      document.getElementById('searchForm').submit();
+  });
+  </script>
+  </body>
 </html>

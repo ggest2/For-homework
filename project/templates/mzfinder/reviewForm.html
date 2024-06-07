@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load mzfinder_filter %}
+{% block content %}
+<div class ="main mainCreateReview">
+    <div class="createReviewBox">
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div role="alert">
+            {% for field in form %}
+            {% if field.errors %}
+            <div>
+                <strong>{{ field.label }}</strong>
+                {{ field.errors }}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <textarea class="form-control" name="content" id="content" rows="10">{{ form.content.value|default_if_none:'' }}</textarea>
+        <button type="submit" class="save">SAVE</button>
+    </form>
+</div>
+</div>
+{% endblock %}

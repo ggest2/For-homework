@@ -1,80 +1,77 @@
-{% extends "base.html" %}
-    {% block content %}
-    {% load mzfinder_filter %}
-    {% load static%}
-    <div class ='restaurants'>
-    {% for restaurant in restaurants %}
-    <div class = 'restaurant' >
-        <div class ='left'>
-            {% if restaurant.imgSrc %}
-            <img width = '194px' height = '194px' src={{restaurant.imgSrc}}>
-            {% else %}
-            {% with src=tag|makeSrc%}
-            <img width = '194px' height = '194px' src={% static src%}>
-            {% endwith%}
-            {% endif %}
-        </div>
-        <div class ='right'>
-            <div class = 'like'>
-                <img width = '50px' src={% static 'img/like.png'%}>
-                <span>{{restaurant.rating}}</span>
-            </div>
-            <a class='name' href="{% url 'mzfinder:detailRestaurant' restaurant.name %}">{{restaurant.name}}</a>
-            <div class ='menus'>
-                <span>MENU</span>
-                {% with menus=restaurant|findMenu%}
-                <div class = 'menu'>
-                    {%for menu in menus%}
-                    {%if menu.name%}
-                    <div>
-                        <span>{{menu.name}}</span>
-                        <span>{{menu.price}}</span>
-                    </div>
-                    {%endif%}
-                    {% endfor%}   
-                </div>
-                {%endwith%}
-            </div>
-        </div>
-        
+{% extends "base.html" %} {% block content %} {% load mzfinder_filter %} 
+{% load static%}
+{% comment %} <a class ="createRestaurant"href="{%url 'mzfinder:createRestaurant' tag%}">식당 추가하기</a> {% endcomment %}
+<div class="restaurants">
+  {% for restaurant in restaurants %}
+  <div class="restaurant">
+    <div class="left">
+      {% if restaurant.imgSrc %}
+      <img width="194px" height="194px" src="{{restaurant.imgSrc}}" />
+      {% else %} {% with src=restaurant.tags|makeSrc%}
+      <img width="194px" height="194px" src={% static src%} /> 
+      {% endwith%} 
+      {%endif %}
     </div>
-    {% if forloop.counter|odd %}
-    <br>
-    {% endif %}
-    {% endfor %}
+    <div class="right">
+      <div class="like">
+        <img width = '50px' src={% static 'img/like.png'%}>
+        <span>{{restaurant.rating}}</span>
+      </div>
+      <a
+        class="name"
+        href="{% url 'mzfinder:detailRestaurant' restaurant.name %}"
+        >{{restaurant.name}}</a
+      >
+      <div class="menus">
+        <span>MENU</span>
+        {% with menus=restaurant|findMenu%}
+        <div class="menu">
+          {%for menu in menus%} {%if menu.name%}
+          <div>
+            <span>{{menu.name}}</span>
+            <span>{{menu.price}}</span>
+          </div>
+          {%endif%} {% endfor%}
+        </div>
+        {%endwith%}
+      </div>
     </div>
-    <ul class ='paging'>
-        {% if restaurants.has_next %}
-        <li >
-            <a class ='previousPage' href="?page={{ restaurants.next_page_number }}">이전</a>
-        </li>
-        {% else %}
-        <li>
-            <a class ='previousPage'tabindex="-1" aria-disabled="true" href="#">이전</a>
-        </li>
-        {% endif %}
-
-        {% for page_number in restaurants.paginator.page_range %}
-        {% if page_number == restaurants.number %}
-        <li aria-current="page">
-            <a id='currentPage' href="?page={{ page_number }}">{{ page_number }}</a>
-        </li>
-        {% else %}
-        <li >
-            <a href="?page={{ page_number }}">{{ page_number }}</a>
-        </li>
-        {% endif %}
-        {% endfor %}
-
-        {% if restaurants.has_next %}
-        <li >
-            <a class ='nextPage' href="?page={{ restaurants.next_page_number }}">다음</a>
-        </li>
-        {% else %}
-        <li>
-            <a  class ='nextPage'tabindex="-1" aria-disabled="true" href="#">다음</a>
-        </li>
-        {% endif %}
-    </ul>
-    <!-- 페이징처리 끝 -->
-    {% endblock %}
+  </div>
+  {% if forloop.counter|odd %}
+  <br />
+  {% endif %} {% endfor %}
+</div>
+<ul class="paging">
+  {% if restaurants.has_previous %}
+  <li>
+    <a class="previousPage" href="?page={{ restaurants.previous_page_number }}"
+      >이전</a>
+  </li>
+  {% else %}
+  <li>
+    <a class="previousPage" tabindex="-1" aria-disabled="true" href="#">이전</a>
+  </li>
+  {% endif %} 
+  {% for page_number in restaurants.paginator.page_range %} 
+  {% if page_number == restaurants.number %}
+  <li aria-current="page">
+    <a id="currentPage" href="?page={{ page_number }}">{{ page_number }}</a>
+  </li>
+  {% else %}
+  <li>
+    <a href="?page={{ page_number }}">{{ page_number }}</a>
+  </li>
+  {% endif %} 
+  {% endfor %} 
+  {% if restaurants.has_next %}
+  <li>
+    <a class="nextPage" href="?page={{ restaurants.next_page_number }}">다음</a>
+  </li>
+  {% else %}
+  <li>
+    <a class="nextPage" tabindex="-1" aria-disabled="true" href="#">다음</a>
+  </li>
+  {% endif %}
+</ul>
+<!-- 페이징처리 끝 -->
+{% endblock %}

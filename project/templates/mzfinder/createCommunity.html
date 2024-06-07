@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block  content %}
+<div class ="main mainCreateCommunity">
+    <div class="createCommunityBox">
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div role="alert">
+            {% for field in form %}
+            {% if field.errors %}
+            <div>
+                <strong>{{ field.label }}</strong>
+                {{ field.errors }}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="smallBox">
+        <span>title</span>
+        <input name="subject" id="subject" rows="10" placeholder="제목을 입력하세요">{{ form.content.value|default_if_none:'' }}</textarea>
+        <span>content</span>
+        <textarea name="content" id="content" placeholder="내용을 입력하세요" rows="10">{{ form.content.value|default_if_none:'' }}</textarea>
+        <button type="submit" class="save">SAVE</button>
+        </div>
+    </form>
+</div>
+</div>
+{% endblock%}

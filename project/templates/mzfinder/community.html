@@ -1,0 +1,40 @@
+{% extends 'base.html'%}
+{% load static%}
+{%block content%}
+<div class=" main mainCommunity">
+    <div class="showComment"> 
+        <h2>식당 추천 커뮤니티</h2>
+        <a class ="makeComment"href="{%url 'mzfinder:createCommunity'%}">
+            <span>글을 작성해주세요!</span>
+            <img width="40px;"src ={% static 'img/pen.png'%}>
+        </a>
+        {%for comment in comments%}
+        <div class="comment">
+                <span class="title">{{comment.subject}}</span>
+                <span class="content">{{comment.content}}</span>
+                {% if request.user == comment.author %}
+                    <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'mzfinder:deleteComment' comment.id %}">삭제</a>
+                {% endif %}
+                <div class="small">
+                <span class="author">{{comment.author}}</span>
+                <span class="create_date">{{comment.create_date}}</span>
+                
+                </div>
+            </div>
+        {%endfor%}
+    </div>
+    
+</div>
+{%endblock%}
+{% block script %}
+<script type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
+{% endblock %}

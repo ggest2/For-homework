@@ -2,7 +2,7 @@
 {% load mzfinder_filter%}
 {% load static%}
 {%block content%}
-<body>
+<div class ='detailRestaurant'>
     <div class ='introduceRestaurant'>
         <div class ='front'>
             {% if restaurant.imgSrc %}
@@ -24,22 +24,49 @@
             <span class ='restaurantCallNumber'>전화번호 : {{restaurant.callNumber}}</span>
         </div>
         <div class ='back'>
-            <a>Map</a>
-            <a>Road</a>
+            <a href={% url 'mzfinder:map' restaurant.name%}>Map</a>
+            
         </div>
     </div>
+<div class ='reviewBox'>
+        <div class ='showReview'>
+        <span>REVIEWS</span>
+        <ul>
+            {% for review in reviews %}
+            <li class='review'>
+                <span class = "userName">-{{review.author.username}}-</span>
+                <pre class = "reviewContent">{{ review.content }}</pre>
+                <span class ="reviewDate">{{review.create_date}}</span>
+                <div class='changeReview'>
+                    {% if request.user == review.author %}
+                    <a href="{% url 'mzfinder:modifyReview' review.id  %}">수정</a>
+                    <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'mzfinder:deleteReview' review.id %}">삭제</a>
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div class ='createReview'>
+            <form action="{% url 'mzfinder:createReview' restaurant.name %}" method="post">
+                {% csrf_token %}
+                <textarea name="content" placeholder="Enter the review" id="content" cols="15" rows="10" wrap="hard"></textarea>
+                <input type="submit" value="Create Reivew"/>
+            </form>
+        </div>
    
+    </div>
 </div>
-    <form action="{% url 'mzfinder:createReview' restaurant.name %}" method="post">
-        {% csrf_token %}
-        <textarea name="content" id="content" rows="15"></textarea>
-        <input type="submit" value="답변등록">
-    </form>
-    <ul>
-    {% for review in restaurant.review_set.all %}
-        <li>{{ review.content }}</li>
-    {% endfor %}
-    </ul>
-</body>
 {%endblock%}
-</html>
+{% block script %}
+<script type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
+{% endblock %}
