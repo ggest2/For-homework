@@ -1,4 +1,4 @@
-# mzfinder(맛집 공유 및 추천 사이트)[![Welcome](https://img.shields.io/badge/Welcome-to%20My%20Repository-green)](https://github.com/ggest2/For-homework)
+# mzfinder(맛집 공유 및 추천 사이트)(python)[![Welcome](https://img.shields.io/badge/Welcome-to%20My%20Repository-green)](https://github.com/ggest2/For-homework)
 
 -개발 목적
 
