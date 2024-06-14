@@ -1,6 +1,6 @@
 # mzfinder(맛집 공유 및 추천 사이트)(python)[![Welcome](https://img.shields.io/badge/Welcome-to%20My%20Repository-green)](https://github.com/ggest2/For-homework)
 
--개발 목적
+-해당 프로젝트 개발 목적
 
   1)  우리 학교 학생이지만 타 지역에 거주하고 있어 학교 주변 지리를 모르는 학생 들 그리고 신입생이기에 학교 주변 지리를 모르는 학생들을 위해서 자동으로 학교부터 가게까지의 경로를 자동으로 찾아주는 사이트를 만들고자 했습니다.
 
